@@ -21,8 +21,8 @@ final class PostItem: Model, Content {
     @Field(key: "description")
     var description: String
     
-    @Field(key: "author")
-    var author: User.IDValue
+    @Parent(key: "author_id")
+    var author: User
     
     @Field(key: "tags")
     var tags: [String]
@@ -34,7 +34,7 @@ final class PostItem: Model, Content {
     var content: String
 
     @Parent(key: "coauthor_id")
-    var coAuthors: [User.IDValue]
+    var coAuthors: [User]
     
     @Timestamp(key: "postDate", on: .create)
     var postDate: Date?
@@ -44,10 +44,11 @@ final class PostItem: Model, Content {
         self.id = id
         self.title = title
         self.description = description
-        self.author = author
+        self.$author.id = author
         self.tags = tags
         self.url = url
         self.content = content
+        self.$coAuthors.id = coAuthors
         self.postDate = postDate
     }
 }
