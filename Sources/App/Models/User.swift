@@ -21,15 +21,18 @@ final class User: Model, Content {
     @Field(key: "password")
     var password: String
     
-    // Social Information
     @OptionalChild(for: \.$user)
     var social: SocialInformation?
     
+    @OptionalChild(for: \.$user)
+    var post: PostItem?
+    
     init() { } 
-    init(id: UUID? = UUID(), email: String, password: String, social: SocialInformation?) {
+    init(id: UUID? = UUID(), email: String, password: String, social: SocialInformation?, post: PostItem?) {
         self.id = id
         self.email = email
         self.password = password
-        self.social = social
+        self.$social = social
+        self.$post.id = post
     }
 }
