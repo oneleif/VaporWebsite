@@ -8,13 +8,21 @@
 import Fluent
 import Vapor
 
+/// User Model
+///
+/// This outlines the User Model. Additionally, it creates an optional child for the social information.
 final class User: Model, Content {
+    @ID(key: .id)
     var id: UUID?
-    // Auth Information
+    
+    @Field(key: "email")
     var email: String
+    
+    @Field(key: "password")
     var password: String
     
     // Social Information
+    @OptionalChild(for: \.$user)
     var social: SocialInformation?
     
     init() { } 
