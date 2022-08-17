@@ -8,6 +8,8 @@ on:
 
 jobs:
   test:
+    container: 
+      image: vapor/swift:5.2
     services:
       psql:
         image: postgres
@@ -25,8 +27,8 @@ jobs:
       - name: 'Running Integration Tests'
         run: swift test --enable-test-discovery --sanitize=thread
         env:
-         DATABASE_PORT: 5432
-         DATABASE_USERNAME: vapor_username
-         DATABASE_PASSWORD: vapor_password
-         DATABASE_NAME: vapor_database
-         DATABASE_HOST: psql
+          DATABASE_PORT: 5432
+          DATABASE_USERNAME: vapor_username
+          DATABASE_PASSWORD: vapor_password
+          DATABASE_NAME: vapor_database
+          DATABASE_HOST: psql
