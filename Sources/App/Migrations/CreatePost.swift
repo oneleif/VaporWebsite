@@ -8,10 +8,21 @@
 import Vapor
 import Fluent
 
-//struct CreatePost: AsyncMigration {
-//    func prepare(on database: Database) async throws {
-//        return try await database.schema("posts")
-//            .id()
-//            .field
-//    }
-//}
+struct CreatePost: AsyncMigration {
+    func prepare(on database: Database) async throws {
+        return try await database.schema("posts")
+            .id()
+            .field("title", .string, .required)
+            .field("description", .string, .required)
+            .field("author_id", .uuid, .required, .references(User.schema, "id"))
+            .field("tags", .array)
+            .field("url", .string, .required)
+            .field("content", .string, .required)
+            .field("postDate", .datetime, .required)
+            .create()
+    }
+    
+    func revert(on database: Database) async throws {
+        return try await database.schema("posts")
+    }
+}
