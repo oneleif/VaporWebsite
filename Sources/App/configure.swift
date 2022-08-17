@@ -2,6 +2,8 @@ import Fluent
 import FluentPostgresDriver
 import Vapor
 
+let instanceID: UUID = UUID()
+
 // configures your application
 public func configure(_ app: Application) throws {
     // uncomment to serve files from /Public folder
