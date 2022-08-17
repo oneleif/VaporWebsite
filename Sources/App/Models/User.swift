@@ -23,8 +23,8 @@ final class User: Model, Content {
     @Field(key: "password")
     var password: String
     
-    @Children(for: \.$author)
-    var post: [PostItem]?
+    @Siblings(through: UserPost.self, from: \.$user, to: \.$post)
+    var posts: [Post]
     
     // MARK: - Social Information
     
@@ -56,11 +56,10 @@ final class User: Model, Content {
     var location: String?
     
     init() { } 
-    init(id: UUID? = UUID(), email: String, password: String, post: [PostItem]?) {
+    init(id: UUID? = UUID(), email: String, password: String) {
         self.id = id
         self.email = email
         self.password = password
-        self.$social.id = social
-        self.$post.id = post
+//        self.$social.id = social
     }
 }
