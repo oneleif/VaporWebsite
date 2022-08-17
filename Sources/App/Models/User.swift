@@ -72,16 +72,70 @@ final class User: Model, Content {
     }
 }
 
-// Output
+// MARK: - DTO
+
+// PUT: Input
+
 struct UserSocialUpdate: Content {
-    let id: UUID?
-    let firstName: String
-    let lastName: String
-    let discordUsername: String
-    let githubUserName: String
-    let profileImage: String
-    let location: String
-    let biography: String
+    let id: UUID
+    let firstName: String?
+    let lastName: String?
+    let discordUsername: String?
+    let githubUsername: String?
+    let profileImage: String?
+    let location: String?
+    let biography: String?
     let tags: [String]
     let links: [String]
+}
+
+extension User {
+    func update(with userSocialUpdate: UserSocialUpdate) {
+        firstName = userSocialUpdate.firstName
+        lastName = userSocialUpdate.lastName
+        discordUsername = userSocialUpdate.discordUsername
+        githubUsername = userSocialUpdate.githubUsername
+        profileImage = userSocialUpdate.profileImage
+        location = userSocialUpdate.location
+        biography = userSocialUpdate.biography
+        tags = userSocialUpdate.tags
+        links = userSocialUpdate.links
+    }
+}
+
+
+// Output
+
+struct UserDTO: Content {
+    let id: String
+    let email: String?
+    let posts: [Post]
+    let firstName: String?
+    let lastName: String?
+    let discordUsername: String?
+    let githubUserName: String?
+    let profileImage: String?
+    let location: String?
+    let biography: String?
+    let tags: [String]
+    let links: [String]
+}
+
+extension User {
+    var dto: UserDTO {
+        UserDTO(
+            id: id?.uuidString ?? "-1",
+            email: email,
+            posts: posts,
+            firstName: firstName,
+            lastName: lastName,
+            discordUsername: discordUsername,
+            githubUserName: githubUsername,
+            profileImage: profileImage,
+            location: location,
+            biography: biography,
+            tags: tags,
+            links: links
+        )
+    }
 }
