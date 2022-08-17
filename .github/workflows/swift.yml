@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 'Checking out repo'
+        uses: actions/checkout@v2
+      - name: 'Setup PostgreSQL'
+        uses: Harmon758/postgresql-action@v1.0.0
+        with:
+          postgresql db: vapor_database
+          postgresql user: vapor_username
+          postgresql password: vapor_password
+      - name: 'Running Integration Tests'
+        run: swift test --enable-test-discovery --sanitize=thread
+        env:
+          DATABASE_PORT: 5432
+          DATABASE_USERNAME: vapor_username
+          DATABASE_PASSWORD: vapor_password
+          DATABASE_NAME: vapor_database
+          DATABASE_HOST: psql
