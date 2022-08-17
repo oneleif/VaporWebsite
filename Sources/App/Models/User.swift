@@ -121,6 +121,7 @@ struct UserDTO: Content {
     let links: [String]
 }
 
+
 extension User {
     var dto: UserDTO {
         UserDTO(
@@ -139,3 +140,5 @@ extension User {
         )
     }
 }
+
+
