@@ -13,6 +13,8 @@ struct UserController: RouteCollection {
         let users = routes.grouped("users")
         users.get(use: index)
         users.post(use: createUser)
+        // MARK: Add PUT here.
+        users.delete(use: deleteUser)
     }
     
     /// Query all users within the table.
