@@ -9,6 +9,7 @@ import Fluent
 import Vapor
 
 struct CreateUser: AsyncMigration {
+    /// Function in which creates and controls the versioning of the table within the database using `AsyncMigration`.
     func prepare(on database: Database) async throws {
         try await database.schema(User.schema)
             .id()
@@ -25,7 +26,7 @@ struct CreateUser: AsyncMigration {
             .field("location", .string)
             .create()
     }
-    
+    /// Function in which deletes the table from within the database.
     func revert(on database: Database) async throws {
         try await database.schema(User.schema)
             .delete()

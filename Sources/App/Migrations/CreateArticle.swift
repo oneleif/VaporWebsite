@@ -8,7 +8,12 @@
 import Vapor
 import Fluent
 
+<<<<<<< HEAD:Sources/App/Migrations/CreateArticle.swift
 struct CreateArticle: AsyncMigration {
+=======
+/// 
+struct CreatePost: AsyncMigration {
+>>>>>>> 83102a7 (added documentation):Sources/App/Migrations/CreatePost.swift
     func prepare(on database: Database) async throws {
         try await database.schema(Article.schema)
             .id()

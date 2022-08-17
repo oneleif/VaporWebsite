@@ -9,6 +9,7 @@ import Fluent
 import Fork
 import Vapor
 
+/// User route controller.
 struct UserController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let users = routes.grouped("users")
@@ -67,7 +68,7 @@ struct UserController: RouteCollection {
     }
     
     // MARK: - Private Helpers
-    
+    /// Private function to find the User ID from within the table.
     private func findUser(req: Request) async throws -> User {
         guard
             let identifiedUser = try await User.find(req.parameters.get("id"), on: req.db)
