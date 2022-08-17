@@ -8,8 +8,6 @@ on:
 
 jobs:
   test:
-    container:
-      image: vapor/swift:5.5
     services:
       psql:
         image: postgres
