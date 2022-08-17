@@ -21,6 +21,9 @@ struct UserController: RouteCollection {
             user.put(use: update)
             user.delete(use: deleteUser)
         }
+        
+        let passwordProtected = routes.grouped("login")
+        passwordProtected.post(use: signUserUp)
     }
     
     // MARK: - Public Endpoints
