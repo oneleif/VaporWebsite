@@ -152,7 +152,7 @@ extension User {
             links: links
         )
     }
-    
+    /// Model for creating an account.
     struct Create: Content {
         var email: String
         var password: String
@@ -160,6 +160,7 @@ extension User {
     }
 }
 
+/// Validations which ensure fields are met before POST.
 extension User.Create: Validatable {
     static func validations(_ validations: inout Validations) {
         validations.add("email", as: String.self, is: !.empty && .email)
