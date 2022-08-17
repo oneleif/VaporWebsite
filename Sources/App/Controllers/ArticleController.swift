@@ -7,6 +7,7 @@
 
 import Fluent
 import Vapor
+import Fork
 
 struct ArticleController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
@@ -50,8 +51,12 @@ struct ArticleController: RouteCollection {
         )
         
         try await article.save(on: req.db)
-        try await author.$articles.attach(article, on: req.db)
-        try await article.$coauthors.attach(coauthorUsers, on: req.db)
+        
+        try await Fork(
+            leftOutput: { try await author.$articles.attach(article, on: req.db) },
+            rightOutput: { try await article.$coauthors.attach(coauthorUsers, on: req.db) }
+        )
+        .merged()
         
         return article
     }
