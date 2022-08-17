@@ -1,4 +1,4 @@
-name: Swift
+name: Test
 
 on:
   push:
@@ -7,13 +7,28 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  test:
+    container:
+      image: vapor/swift:5.6
+    services:
+      psql:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: test
+          POSTGRES_DB: test
+          POSTGRES_PASSWORD: test
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+      - name: 'Checking out repo'
+        uses: actions/checkout@v2
+      - name: 'Running Integration Tests'
+                run: swift test --enable-test-discovery --sanitize=thread
+        env:
+         DATABASE_PORT: 5432
+         DATABASE_USERNAME: vapor_username
+         DATABASE_PASSWORD: vapor_password
+         DATABASE_NAME: vapor_database
+         DATABASE_HOST: psql
