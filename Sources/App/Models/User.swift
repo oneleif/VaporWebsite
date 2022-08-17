@@ -71,3 +71,17 @@ final class User: Model, Content {
         self.location = location
     }
 }
+
+// Output
+struct UserSocialUpdate: Content {
+    let id: UUID?
+    let firstName: String
+    let lastName: String
+    let discordUsername: String
+    let githubUserName: String
+    let profileImage: String
+    let location: String
+    let biography: String
+    let tags: [String]
+    let links: [String]
+}

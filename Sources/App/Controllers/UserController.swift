@@ -14,7 +14,9 @@ struct UserController: RouteCollection {
         users.get(use: index)
         users.post(use: createUser)
         // MARK: Add PUT here.
-        users.delete(use: deleteUser)
+        users.group(":id") { user in
+            user.delete(use: deleteUser)
+        }
     }
     
     /// Query all users within the table.
@@ -30,6 +32,9 @@ struct UserController: RouteCollection {
     }
     
     // MARK: - Add PUT here... mainly unsure if we need to explicitly state the change? (ie. identifiedUser.discordUsername = user.discordName)
+    func update(req: Request) async throws -> User {
+        
+    }
     
     /// Delete user within table.
     func deleteUser(req: Request) async throws -> HTTPStatus {
