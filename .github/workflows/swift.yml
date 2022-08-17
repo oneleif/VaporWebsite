@@ -8,8 +8,6 @@ on:
 
 jobs:
   test:
-    container: 
-      image: vapor/swift:5.2
     services:
       psql:
         image: postgres
@@ -24,6 +22,12 @@ jobs:
     steps:
       - name: 'Checking out repo'
         uses: actions/checkout@v2
+      - name: 'Setup PostgreSQL'
+        uses: Harmon758/postgresql-action@v1.0.0
+        with:
+          postgresql db: vapor_database
+          postgresql user: vapor_username
+          postgresql password: vapor_password
       - name: 'Running Integration Tests'
         run: swift test --enable-test-discovery --sanitize=thread
         env:
