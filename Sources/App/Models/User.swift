@@ -20,8 +20,8 @@ final class User: Model, Content {
     @Field(key: "email")
     var email: String
     
-    @Field(key: "password")
-    var password: String
+    @Field(key: "password_hash")
+    var passwordHash: String
     
     @Siblings(through: UserArticlePivot.self, from: \.$user, to: \.$article)
     var articles: [Article]
@@ -55,6 +55,7 @@ final class User: Model, Content {
     @OptionalField(key: "location")
     var location: String?
     
+<<<<<<< HEAD
     init() { }
     
     init(
@@ -71,9 +72,13 @@ final class User: Model, Content {
         biography: String?,
         location: String?
     ) {
+=======
+    init() { } 
+    init(id: UUID? = UUID(), email: String, passwordHash: String, firstName: String?, lastName: String?, discordUsername: String?, githubUsername: String?, tags: [String], links: [String], profileImage: String?, biography: String?, location: String?) {
+>>>>>>> d6ecf8d (Authenticator reworked to apply Fluent methods. UserController updated with a signup function. Updated User model to use passwordHash rather then password.)
         self.id = id
         self.email = email
-        self.password = password
+        self.passwordHash = passwordHash
         self.firstName = firstName
         self.lastName = lastName
         self.discordUsername = discordUsername
