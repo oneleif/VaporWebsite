@@ -10,11 +10,12 @@ import Fluent
 
 struct AuthenticationController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let passwordProtected = routes.grouped("login")
+        let passwordProtected = routes.grouped("auth")
         passwordProtected.post(use: signUserUp)
+        passwordProtected.post(use: loginUser)
     }
     
-    /// Sign user up.
+    /// Sign User Up.
     func signUserUp(req: Request) async throws -> User {
         try User.Create.validate(content: req)
         let create = try req.content.decode(User.Create.self)
@@ -40,4 +41,14 @@ struct AuthenticationController: RouteCollection {
         return user
     }
     
+    /// Log User In.
+    func loginUser(req: Request) async throws -> User {
+        let user = try req.content.decode(User.self)
+        if try user.verify(password: user.passwordHash) {
+            req.auth.login(user)
+        } else {
+            throw Abort(.forbidden, reason: "Password incorrect.")
+        }
+        return user
+    }
 }
