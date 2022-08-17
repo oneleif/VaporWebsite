@@ -23,9 +23,9 @@ struct UserController: RouteCollection {
     }
     
     /// Create user within the table.
-    func createUser(req: Request) async throws -> [User] {
+    func createUser(req: Request) async throws -> User {
         let user = try req.content.decode(User.self)
-        try user.save(on: req.db)
+        try await user.save(on: req.db)
         return user
     }
     
@@ -33,8 +33,7 @@ struct UserController: RouteCollection {
     
     /// Delete user within table.
     func deleteUser(req: Request) async throws -> HTTPStatus {
-        let user = try req.content.decode(User.self)
-        guard let identifiedUser = try User.find(req.parameters.get("id"), on: req.db) else { throw Abort(.notFound) }
+        guard let identifiedUser = try await User.find(req.parameters.get("id"), on: req.db) else { throw Abort(.notFound) }
         try await identifiedUser.delete(on: req.db)
         return .ok
     }
