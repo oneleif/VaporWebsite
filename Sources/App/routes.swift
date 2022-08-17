@@ -5,5 +5,5 @@ func routes(_ app: Application) throws {
     app.get { _ in instanceID.uuidString }
 
     try app.register(collection: UserController())
-//    try app.register(collection: PostController())
+    try app.register(collection: ArticleController())
 }

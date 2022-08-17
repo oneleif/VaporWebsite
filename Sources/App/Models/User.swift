@@ -23,8 +23,8 @@ final class User: Model, Content {
     @Field(key: "password")
     var password: String
     
-    @Siblings(through: UserPost.self, from: \.$user, to: \.$post)
-    var posts: [Post]
+    @Siblings(through: UserArticlePivot.self, from: \.$user, to: \.$article)
+    var articles: [Article]
     
     // MARK: - Social Information
     
@@ -55,8 +55,22 @@ final class User: Model, Content {
     @OptionalField(key: "location")
     var location: String?
     
-    init() { } 
-    init(id: UUID? = UUID(), email: String, password: String, firstName: String?, lastName: String?, discordUsername: String?, githubUsername: String?, tags: [String], links: [String], profileImage: String?, biography: String?, location: String?) {
+    init() { }
+    
+    init(
+        id: UUID? = UUID(),
+        email: String,
+        password: String,
+        firstName: String?,
+        lastName: String?,
+        discordUsername: String?,
+        githubUsername: String?,
+        tags: [String],
+        links: [String],
+        profileImage: String?,
+        biography: String?,
+        location: String?
+    ) {
         self.id = id
         self.email = email
         self.password = password
@@ -103,13 +117,12 @@ extension User {
     }
 }
 
-
 // Output
 
 struct UserDTO: Content {
     let id: String
     let email: String?
-    let posts: [Post]
+    let articles: [UUID]
     let firstName: String?
     let lastName: String?
     let discordUsername: String?
@@ -122,11 +135,11 @@ struct UserDTO: Content {
 }
 
 extension User {
-    var dto: UserDTO {
+    func dto(on database: Database) async throws -> UserDTO {
         UserDTO(
             id: id?.uuidString ?? "-1",
             email: email,
-            posts: posts,
+            articles: try await $articles.get(on: database).compactMap(\.id),
             firstName: firstName,
             lastName: lastName,
             discordUsername: discordUsername,
