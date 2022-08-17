@@ -24,6 +24,7 @@ struct CreateUser: AsyncMigration {
             .field("profileImage", .string)
             .field("biography", .string)
             .field("location", .string)
+            .unique(on: "email")
             .create()
     }
     /// Function in which deletes the table from within the database.

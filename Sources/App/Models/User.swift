@@ -134,6 +134,7 @@ struct UserDTO: Content {
     let links: [String]
 }
 
+
 extension User {
     func dto(on database: Database) async throws -> UserDTO {
         UserDTO(
@@ -152,3 +153,5 @@ extension User {
         )
     }
 }
+
+
