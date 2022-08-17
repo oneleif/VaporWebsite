@@ -27,4 +27,14 @@ struct UserController: RouteCollection {
         return user
     }
     
+    // MARK: - Add PUT here... mainly unsure if we need to explicitly state the change? (ie. identifiedUser.discordUsername = user.discordName)
+    
+    /// Delete user within table.
+    func deleteUser(req: Request) async throws -> HTTPStatus {
+        let user = try req.content.decode(User.self)
+        guard let identifiedUser = try User.find(req.parameters.get("id"), on: req.db) else { throw Abort(.notFound) }
+        try await identifiedUser.delete(on: req.db)
+        return .ok
+    }
+    
 }
