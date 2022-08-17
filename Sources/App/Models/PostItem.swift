@@ -12,8 +12,10 @@ import Vapor
 ///
 /// This outlines the model of each article post. Additionally, it creates the relationship between the parent which will be the user.
 final class PostItem: Model, Content {
+    static var schema = "posts"
+    
     @ID(key: .id)
-    var id = UUID?
+    var id: UUID?
     
     @Field(key: "title")
     var title: String
@@ -33,14 +35,15 @@ final class PostItem: Model, Content {
     @Field(key: "content")
     var content: String
 
+    #warning("TODO - Swap this over to a sibling relationship - many to many?")
     @Parent(key: "coauthor_id")
-    var coAuthors: [User]
+    var coauthors: [User]
     
     @Timestamp(key: "postDate", on: .create)
     var postDate: Date?
     
     init() { }
-    init(id: UUID = UUID(), title: String, description: String, author: User.IDValue, tags: [String], url: String, content: String, coAuthors: [User.IDValue] postDate: Date?) {
+    init(id: UUID = UUID(), title: String, description: String, author: User.IDValue, tags: [String], url: String, content: String, coAuthors: [User.IDValue], postDate: Date?) {
         self.id = id
         self.title = title
         self.description = description
@@ -52,3 +55,4 @@ final class PostItem: Model, Content {
         self.postDate = postDate
     }
 }
+

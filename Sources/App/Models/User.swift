@@ -12,6 +12,8 @@ import Vapor
 ///
 /// This outlines the User Model. Additionally, it creates an optional child for the social information.
 final class User: Model, Content {
+    static var schema = "users"
+    
     @ID(key: .id)
     var id: UUID?
     
@@ -21,18 +23,44 @@ final class User: Model, Content {
     @Field(key: "password")
     var password: String
     
-    @OptionalChild(for: \.$user)
-    var social: SocialInformation?
+    @Children(for: \.$author)
+    var post: [PostItem]?
     
-    @OptionalChild(for: \.$user)
-    var post: PostItem?
+    // MARK: - Social Information
+    
+    @OptionalField(key: "firstName")
+    var firstName: String?
+    
+    @OptionalField(key: "lastName")
+    var lastName: String?
+    
+    @OptionalField(key: "discordUsername")
+    var discordUsername: String?
+    
+    @OptionalField(key: "githubUsername")
+    var githubUsername: String?
+    
+    @OptionalField(key: "tags")
+    var tags: [String]?
+    
+    @OptionalField(key: "profileImage")
+    var profileImage: String?
+    
+    @OptionalField(key: "biography")
+    var biography: String?
+    
+    @OptionalField(key: "links")
+    var links: [String]?
+    
+    @OptionalField(key: "location")
+    var location: String?
     
     init() { } 
-    init(id: UUID? = UUID(), email: String, password: String, social: SocialInformation?, post: PostItem?) {
+    init(id: UUID? = UUID(), email: String, password: String, post: [PostItem]?) {
         self.id = id
         self.email = email
         self.password = password
-        self.$social = social
+        self.$social.id = social
         self.$post.id = post
     }
 }
