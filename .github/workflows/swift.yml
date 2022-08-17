@@ -25,7 +25,7 @@ jobs:
       - name: 'Checking out repo'
         uses: actions/checkout@v2
       - name: 'Running Integration Tests'
-                run: swift test --enable-test-discovery --sanitize=thread
+        run: swift test --enable-test-discovery --sanitize=thread
         env:
          DATABASE_PORT: 5432
          DATABASE_USERNAME: vapor_username
