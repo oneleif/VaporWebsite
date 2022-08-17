@@ -10,7 +10,7 @@ import Fluent
 
 struct CreatePost: AsyncMigration {
     func prepare(on database: Database) async throws {
-        return try await database.schema("posts")
+        try await database.schema(Post.schema)
             .id()
             .field("title", .string, .required)
             .field("description", .string, .required)
@@ -23,6 +23,6 @@ struct CreatePost: AsyncMigration {
     }
     
     func revert(on database: Database) async throws {
-        return try await database.schema("posts")
+        try await database.schema(Post.schema)
     }
 }
