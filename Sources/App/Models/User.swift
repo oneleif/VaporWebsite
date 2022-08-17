@@ -20,8 +20,8 @@ final class User: Model, Content {
     @Field(key: "email")
     var email: String
     
-    @Field(key: "password")
-    var password: String
+    @Field(key: "password_hash")
+    var passwordHash: String
     
     @Siblings(through: UserPost.self, from: \.$user, to: \.$post)
     var posts: [Post]
@@ -56,10 +56,10 @@ final class User: Model, Content {
     var location: String?
     
     init() { } 
-    init(id: UUID? = UUID(), email: String, password: String, firstName: String?, lastName: String?, discordUsername: String?, githubUsername: String?, tags: [String], links: [String], profileImage: String?, biography: String?, location: String?) {
+    init(id: UUID? = UUID(), email: String, passwordHash: String, firstName: String?, lastName: String?, discordUsername: String?, githubUsername: String?, tags: [String], links: [String], profileImage: String?, biography: String?, location: String?) {
         self.id = id
         self.email = email
-        self.password = password
+        self.passwordHash = passwordHash
         self.firstName = firstName
         self.lastName = lastName
         self.discordUsername = discordUsername
