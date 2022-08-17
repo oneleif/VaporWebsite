@@ -40,26 +40,34 @@ final class User: Model, Content {
     @OptionalField(key: "githubUsername")
     var githubUsername: String?
     
-    @OptionalField(key: "tags")
-    var tags: [String]?
+    @Field(key: "tags")
+    var tags: [String]
+    
+    @Field(key: "links")
+    var links: [String]
     
     @OptionalField(key: "profileImage")
     var profileImage: String?
     
     @OptionalField(key: "biography")
     var biography: String?
-    
-    @OptionalField(key: "links")
-    var links: [String]?
-    
+
     @OptionalField(key: "location")
     var location: String?
     
     init() { } 
-    init(id: UUID? = UUID(), email: String, password: String) {
+    init(id: UUID? = UUID(), email: String, password: String, firstName: String?, lastName: String?, discordUsername: String?, githubUsername: String?, tags: [String], links: [String], profileImage: String?, biography: String?, location: String?) {
         self.id = id
         self.email = email
         self.password = password
-//        self.$social.id = social
+        self.firstName = firstName
+        self.lastName = lastName
+        self.discordUsername = discordUsername
+        self.githubUsername = githubUsername
+        self.tags = tags
+        self.links = links
+        self.profileImage = profileImage
+        self.biography = biography
+        self.location = location
     }
 }
