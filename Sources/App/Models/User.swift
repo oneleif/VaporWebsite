@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  User.swift
 //  
 //
 //  Created by Rob Maltese on 8/16/22.
@@ -23,8 +23,8 @@ final class User: Model, Content {
     @Field(key: "password")
     var password: String
     
-    @Children(for: \.$author)
-    var post: [PostItem]?
+    @Siblings(through: UserPost.self, from: \.$user, to: \.$post)
+    var posts: [Post]
     
     // MARK: - Social Information
     
@@ -40,27 +40,102 @@ final class User: Model, Content {
     @OptionalField(key: "githubUsername")
     var githubUsername: String?
     
-    @OptionalField(key: "tags")
-    var tags: [String]?
+    @Field(key: "tags")
+    var tags: [String]
+    
+    @Field(key: "links")
+    var links: [String]
     
     @OptionalField(key: "profileImage")
     var profileImage: String?
     
     @OptionalField(key: "biography")
     var biography: String?
-    
-    @OptionalField(key: "links")
-    var links: [String]?
-    
+
     @OptionalField(key: "location")
     var location: String?
     
     init() { } 
-    init(id: UUID? = UUID(), email: String, password: String, post: [PostItem]?) {
+    init(id: UUID? = UUID(), email: String, password: String, firstName: String?, lastName: String?, discordUsername: String?, githubUsername: String?, tags: [String], links: [String], profileImage: String?, biography: String?, location: String?) {
         self.id = id
         self.email = email
         self.password = password
-        self.$social.id = social
-        self.$post.id = post
+        self.firstName = firstName
+        self.lastName = lastName
+        self.discordUsername = discordUsername
+        self.githubUsername = githubUsername
+        self.tags = tags
+        self.links = links
+        self.profileImage = profileImage
+        self.biography = biography
+        self.location = location
+    }
+}
+
+// MARK: - DTO
+
+// PUT: Input
+
+struct UserSocialUpdate: Content {
+    let id: UUID
+    let firstName: String?
+    let lastName: String?
+    let discordUsername: String?
+    let githubUsername: String?
+    let profileImage: String?
+    let location: String?
+    let biography: String?
+    let tags: [String]
+    let links: [String]
+}
+
+extension User {
+    func update(with userSocialUpdate: UserSocialUpdate) {
+        firstName = userSocialUpdate.firstName
+        lastName = userSocialUpdate.lastName
+        discordUsername = userSocialUpdate.discordUsername
+        githubUsername = userSocialUpdate.githubUsername
+        profileImage = userSocialUpdate.profileImage
+        location = userSocialUpdate.location
+        biography = userSocialUpdate.biography
+        tags = userSocialUpdate.tags
+        links = userSocialUpdate.links
+    }
+}
+
+
+// Output
+
+struct UserDTO: Content {
+    let id: String
+    let email: String?
+    let posts: [Post]
+    let firstName: String?
+    let lastName: String?
+    let discordUsername: String?
+    let githubUserName: String?
+    let profileImage: String?
+    let location: String?
+    let biography: String?
+    let tags: [String]
+    let links: [String]
+}
+
+extension User {
+    var dto: UserDTO {
+        UserDTO(
+            id: id?.uuidString ?? "-1",
+            email: email,
+            posts: posts,
+            firstName: firstName,
+            lastName: lastName,
+            discordUsername: discordUsername,
+            githubUserName: githubUsername,
+            profileImage: profileImage,
+            location: location,
+            biography: biography,
+            tags: tags,
+            links: links
+        )
     }
 }
