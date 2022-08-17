@@ -29,5 +29,6 @@ struct CreateUser: AsyncMigration {
     
     func revert(on database: Database) async throws {
         try await database.schema(User.schema)
+            .delete()
     }
 }
