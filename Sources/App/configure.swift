@@ -16,6 +16,8 @@ public func configure(_ app: Application) throws {
     ), as: .psql)
 
 //    app.migrations.add(CreateTodo())
+    app.migrations.add(CreateUser())
+    try app.autoMigrate().wait()
 
     // register routes
     try routes(app)
