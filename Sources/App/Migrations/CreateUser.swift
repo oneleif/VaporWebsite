@@ -8,14 +8,13 @@
 import Fluent
 import Vapor
 
-
 struct CreateUser: AsyncMigration {
     /// Function in which creates and controls the versioning of the table within the database using `AsyncMigration`.
     func prepare(on database: Database) async throws {
         try await database.schema(User.schema)
             .id()
             .field("email", .string, .required)
-            .field("password", .string, .required)
+            .field("password_hash", .string, .required)
             .field("firstName", .string)
             .field("lastName", .string)
             .field("discordUsername", .string)
@@ -25,6 +24,7 @@ struct CreateUser: AsyncMigration {
             .field("profileImage", .string)
             .field("biography", .string)
             .field("location", .string)
+            .unique(on: "email")
             .create()
     }
     /// Function in which deletes the table from within the database.

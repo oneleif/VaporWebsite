@@ -2,6 +2,8 @@ import Fluent
 import FluentPostgresDriver
 import Vapor
 
+let instanceID: UUID = UUID()
+
 // configures your application
 public func configure(_ app: Application) throws {
     // uncomment to serve files from /Public folder
@@ -24,7 +26,11 @@ public func configure(_ app: Application) throws {
         )
     }
     
-    app.migrations.add(CreateUser())
+    app.migrations.add(
+        CreateUser(),
+        CreateArticle(),
+        CreateUserArticlePivot()
+    )
     
     try app.autoMigrate().wait()
     

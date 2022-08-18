@@ -55,6 +55,15 @@
       }
     },
     {
+      "identity" : "fork",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/0xLeif/Fork.git",
+      "state" : {
+        "revision" : "443010d431573b661d13ecbad1a8c9a9d7e156e5",
+        "version" : "0.6.0"
+      }
+    },
+    {
       "identity" : "imperial",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor-community/Imperial.git",

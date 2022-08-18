@@ -6,6 +6,7 @@
 //
 
 import Fluent
+import Fork
 import Vapor
 
 /// User route controller.
@@ -26,19 +27,27 @@ struct UserController: RouteCollection {
     
     /// Query all users within the table.
     func index(req: Request) async throws -> [UserDTO] {
-        try await User.query(on: req.db).all().map(\.dto)
+        try await ForkedArray(
+            try await User.query(on: req.db).all(),
+            output: {
+                try await $0.dto(on: req.db)
+            }
+        )
+        .output()
     }
     
     /// Create user within the table.
     func createUser(req: Request) async throws -> UserDTO {
         let user = try req.content.decode(User.self)
         try await user.save(on: req.db)
-        return user.dto
+        return try await user.dto(on: req.db)
     }
+    
+ 
     
     /// Find the User for the provided User ID
     func find(req: Request) async throws -> UserDTO {
-        try await findUser(req: req).dto
+        try await findUser(req: req).dto(on: req.db)
     }
     
     /// Update the user withing the table
@@ -50,7 +59,7 @@ struct UserController: RouteCollection {
         
         try await identifiedUser.update(on: req.db)
         
-        return identifiedUser.dto
+        return try await identifiedUser.dto(on: req.db)
     }
     
     /// Delete user within table.

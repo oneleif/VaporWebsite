@@ -20,11 +20,11 @@ final class User: Model, Content {
     @Field(key: "email")
     var email: String
     
-    @Field(key: "password")
-    var password: String
+    @Field(key: "password_hash")
+    var passwordHash: String
     
-    @Siblings(through: UserPost.self, from: \.$user, to: \.$post)
-    var posts: [Post]
+    @Siblings(through: UserArticlePivot.self, from: \.$user, to: \.$article)
+    var articles: [Article]
     
     // MARK: - Social Information
     
@@ -55,11 +55,25 @@ final class User: Model, Content {
     @OptionalField(key: "location")
     var location: String?
     
-    init() { } 
-    init(id: UUID? = UUID(), email: String, password: String, firstName: String?, lastName: String?, discordUsername: String?, githubUsername: String?, tags: [String], links: [String], profileImage: String?, biography: String?, location: String?) {
+    init() { }
+    
+    init(
+        id: UUID? = UUID(),
+        email: String,
+        passwordHash: String,
+        firstName: String?,
+        lastName: String?,
+        discordUsername: String?,
+        githubUsername: String?,
+        tags: [String],
+        links: [String],
+        profileImage: String?,
+        biography: String?,
+        location: String?
+    ) {
         self.id = id
         self.email = email
-        self.password = password
+        self.passwordHash = passwordHash
         self.firstName = firstName
         self.lastName = lastName
         self.discordUsername = discordUsername
@@ -103,13 +117,12 @@ extension User {
     }
 }
 
-
 // Output
 
 struct UserDTO: Content {
     let id: String
     let email: String?
-    let posts: [Post]
+    let articles: [UUID]
     let firstName: String?
     let lastName: String?
     let discordUsername: String?
@@ -121,12 +134,13 @@ struct UserDTO: Content {
     let links: [String]
 }
 
+
 extension User {
-    var dto: UserDTO {
+    func dto(on database: Database) async throws -> UserDTO {
         UserDTO(
             id: id?.uuidString ?? "-1",
             email: email,
-            posts: posts,
+            articles: try await $articles.get(on: database).compactMap(\.id),
             firstName: firstName,
             lastName: lastName,
             discordUsername: discordUsername,
@@ -138,4 +152,25 @@ extension User {
             links: links
         )
     }
+    /// Model for creating an account.
+    struct Create: Content {
+        var email: String
+        var password: String
+        var confirmPassword: String
+    }
+    /// Model for logging into an account.
+    struct Login: Content {
+        var email: String
+        var password: String
+    }
 }
+
+/// Validations which ensure fields are met before POST.
+extension User.Create: Validatable {
+    static func validations(_ validations: inout Validations) {
+        validations.add("email", as: String.self, is: !.empty && .email)
+        validations.add("password", as: String.self, is: !.empty && .count(8...), required: true)
+    }
+}
+
+
