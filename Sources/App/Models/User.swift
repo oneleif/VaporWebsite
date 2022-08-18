@@ -20,8 +20,8 @@ final class User: Model, Content {
     @Field(key: "email")
     var email: String
     
-    @Field(key: "password")
-    var password: String
+    @Field(key: "password_hash")
+    var passwordHash: String
     
     @Siblings(through: UserArticlePivot.self, from: \.$user, to: \.$article)
     var articles: [Article]
@@ -60,7 +60,7 @@ final class User: Model, Content {
     init(
         id: UUID? = UUID(),
         email: String,
-        password: String,
+        passwordHash: String,
         firstName: String?,
         lastName: String?,
         discordUsername: String?,
@@ -73,7 +73,7 @@ final class User: Model, Content {
     ) {
         self.id = id
         self.email = email
-        self.password = password
+        self.passwordHash = passwordHash
         self.firstName = firstName
         self.lastName = lastName
         self.discordUsername = discordUsername
@@ -134,6 +134,7 @@ struct UserDTO: Content {
     let links: [String]
 }
 
+
 extension User {
     func dto(on database: Database) async throws -> UserDTO {
         UserDTO(
@@ -151,4 +152,25 @@ extension User {
             links: links
         )
     }
+    /// Model for creating an account.
+    struct Create: Content {
+        var email: String
+        var password: String
+        var confirmPassword: String
+    }
+    /// Model for logging into an account.
+    struct Login: Content {
+        var email: String
+        var password: String
+    }
 }
+
+/// Validations which ensure fields are met before POST.
+extension User.Create: Validatable {
+    static func validations(_ validations: inout Validations) {
+        validations.add("email", as: String.self, is: !.empty && .email)
+        validations.add("password", as: String.self, is: !.empty && .count(8...), required: true)
+    }
+}
+
+

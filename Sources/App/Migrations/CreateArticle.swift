@@ -8,6 +8,7 @@
 import Vapor
 import Fluent
 
+///
 struct CreateArticle: AsyncMigration {
     func prepare(on database: Database) async throws {
         try await database.schema(Article.schema)
