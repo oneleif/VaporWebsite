@@ -44,7 +44,7 @@ struct AuthenticationController: RouteCollection {
     }
     
     /// Log User In.
-    func loginUser(req: Request) async throws -> User {
+    func loginUser(req: Request) async throws -> UserDTO {
         let userLogin = try req.content.decode(User.Login.self)
         guard let user = try await User.query(on: req.db).filter(\.$email, .equal, userLogin.email).first() else {
             throw Abort(.notFound)
@@ -54,6 +54,6 @@ struct AuthenticationController: RouteCollection {
         } else {
             throw Abort(.forbidden, reason: "Password incorrect.")
         }
-        return user
+        return try await user.dto(on: req.db)
     }
 }
