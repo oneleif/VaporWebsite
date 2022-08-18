@@ -163,6 +163,7 @@ extension User {
         var password: String
         var confirmPassword: String
     }
+<<<<<<< HEAD
 }
 
 /// Validations which ensure fields are met before POST.
@@ -173,3 +174,15 @@ extension User.Create: Validatable {
     }
 }
 
+=======
+}
+
+/// Validations which ensure fields are met before POST.
+extension User.Create: Validatable {
+    static func validations(_ validations: inout Validations) {
+        validations.add("email", as: String.self, is: !.empty && .email)
+        validations.add("password", as: String.self, is: !.empty && .count(8...), required: true)
+    }
+}
+
+>>>>>>> 718bb29acf1bcd7ebbf6c23d0ccee2950bb07882
