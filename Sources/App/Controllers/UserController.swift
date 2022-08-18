@@ -43,8 +43,6 @@ struct UserController: RouteCollection {
         return try await user.dto(on: req.db)
     }
     
- 
-    
     /// Find the User for the provided User ID
     func find(req: Request) async throws -> UserDTO {
         try await findUser(req: req).dto(on: req.db)
