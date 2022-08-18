@@ -12,7 +12,10 @@ import Vapor
 /// User route controller.
 struct UserController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let users = routes.grouped("users")
+        let users = routes
+            .grouped(User.guardMiddleware())
+            .grouped("users")
+        
         users.get(use: index)
         users.post(use: createUser)
         

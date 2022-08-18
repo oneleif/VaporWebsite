@@ -165,6 +165,16 @@ extension User {
     }
 }
 
+extension User: ModelAuthenticatable {
+    // Unable to change the static let protocol key over to match naming convention due to how Vapor has setup the protocol.
+    static let usernameKey = \User.$email
+    static let passwordHashKey = \User.$passwordHash
+    
+    func verify(password: String) throws -> Bool {
+        try Bcrypt.verify(password, created: passwordHash)
+    }
+}
+
 /// Validations which ensure fields are met before POST.
 extension User.Create: Validatable {
     static func validations(_ validations: inout Validations) {
@@ -173,4 +183,5 @@ extension User.Create: Validatable {
     }
 }
 
-
+// Allow this model to be persisted in sessions.
+extension User: ModelSessionAuthenticatable {}

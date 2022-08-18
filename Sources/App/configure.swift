@@ -26,12 +26,15 @@ public func configure(_ app: Application) throws {
         )
     }
     
-    app.migrations.add(
-        CreateUser(),
-        CreateArticle(),
-        CreateUserArticlePivot()
-    )
+    app.middleware.use(app.sessions.middleware)
+    app.middleware.use(User.sessionAuthenticator())
     
+    app.migrations.add(
+        User.Migration(),
+        Article.Migration(),
+        UserArticlePivot.Migration()
+    )
+
     try app.autoMigrate().wait()
     
     // register routes

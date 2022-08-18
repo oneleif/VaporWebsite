@@ -11,7 +11,10 @@ import Fork
 
 struct ArticleController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let articles = routes.grouped("articles")
+        let articles = routes
+            .grouped(User.guardMiddleware())
+            .grouped("articles")
+        
         articles.get(use: index)
         articles.post(use: create)
         
@@ -26,13 +29,13 @@ struct ArticleController: RouteCollection {
     
     /// Query all Articles within the table.
     func index(req: Request) async throws -> [Article] {
-        try await Article.query(on: req.db).all()
+        return try await Article.query(on: req.db).all()
     }
     
     /// Create an Article within the table.
     func create(req: Request) async throws -> Article {
         let articleCreate = try req.content.decode(ArticleCreate.self)
-
+        
         let author = try await req.authService.requireAuthorization()
         
         let coauthorUsers = try await User.query(on: req.db).all()
@@ -68,7 +71,7 @@ struct ArticleController: RouteCollection {
     func update(req: Request) async throws -> Article {
         let author = try await req.authService.requireAuthorization()
         let articleID: UUID? = req.parameters.get("id")
-
+        
         guard try await author.$articles.get(on: req.db).contains(where: { $0.id == articleID }) else {
             throw Abort(.forbidden, reason: "Requesting author is not a contributor.")
         }
@@ -102,6 +105,6 @@ struct ArticleController: RouteCollection {
         
         return identifiedArticle
     }
-
+    
     
 }
