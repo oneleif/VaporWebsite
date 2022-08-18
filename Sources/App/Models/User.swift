@@ -55,13 +55,12 @@ final class User: Model, Content {
     @OptionalField(key: "location")
     var location: String?
     
-<<<<<<< HEAD
     init() { }
     
     init(
         id: UUID? = UUID(),
         email: String,
-        password: String,
+        passwordHash: String,
         firstName: String?,
         lastName: String?,
         discordUsername: String?,
@@ -72,10 +71,6 @@ final class User: Model, Content {
         biography: String?,
         location: String?
     ) {
-=======
-    init() { } 
-    init(id: UUID? = UUID(), email: String, passwordHash: String, firstName: String?, lastName: String?, discordUsername: String?, githubUsername: String?, tags: [String], links: [String], profileImage: String?, biography: String?, location: String?) {
->>>>>>> d6ecf8d (Authenticator reworked to apply Fluent methods. UserController updated with a signup function. Updated User model to use passwordHash rather then password.)
         self.id = id
         self.email = email
         self.passwordHash = passwordHash
@@ -163,7 +158,11 @@ extension User {
         var password: String
         var confirmPassword: String
     }
-<<<<<<< HEAD
+    /// Model for logging into an account.
+    struct Login: Content {
+        var email: String
+        var password: String
+    }
 }
 
 /// Validations which ensure fields are met before POST.
@@ -174,15 +173,4 @@ extension User.Create: Validatable {
     }
 }
 
-=======
-}
 
-/// Validations which ensure fields are met before POST.
-extension User.Create: Validatable {
-    static func validations(_ validations: inout Validations) {
-        validations.add("email", as: String.self, is: !.empty && .email)
-        validations.add("password", as: String.self, is: !.empty && .count(8...), required: true)
-    }
-}
-
->>>>>>> 718bb29acf1bcd7ebbf6c23d0ccee2950bb07882
