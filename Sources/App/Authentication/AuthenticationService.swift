@@ -7,7 +7,7 @@
 
 import Vapor
 
-struct AuthenticationService {
+struct AuthenticationService: AsyncBasicAuthenticator {
     let request: Request
     func requireAuthorization() async throws -> User {
        let user = try request.auth.require(User.self)

@@ -32,10 +32,8 @@ struct ArticleController: RouteCollection {
     /// Create an Article within the table.
     func create(req: Request) async throws -> Article {
         let articleCreate = try req.content.decode(ArticleCreate.self)
-        
-        guard
-            let author = try await User.find(articleCreate.author, on: req.db)
-        else { throw Abort(.notFound) }
+
+        let author = try await req.authService.requireAuthorization()
         
         let coauthorUsers = try await User.query(on: req.db).all()
             .filter { user in articleCreate.coauthors.contains(where: { user.id == $0 })}
@@ -63,33 +61,43 @@ struct ArticleController: RouteCollection {
     
     /// Find the Article for the provided Article ID
     func find(req: Request) async throws -> Article {
-        try await findArticle(req: req)
+        try await findArticle(id: req.parameters.get("id"), on: req.db)
     }
     
-    /// Update the Article withing the table
+    /// Update the Article within the table after checking that the author requesting the update, matches the author of the article.
     func update(req: Request) async throws -> Article {
-        let identifiedArticle = try await findArticle(req: req)
+        let author = try await req.authService.requireAuthorization()
+        let articleID: UUID? = req.parameters.get("id")
+
+        guard try await author.$articles.get(on: req.db).contains(where: { $0.id == articleID }) else {
+            throw Abort(.forbidden, reason: "Requesting author is not a contributor.")
+        }
+        
+        let identifiedArticle = try await findArticle(id: articleID, on: req.db)
         let updatedArticleDTO = try req.content.decode(ArticleUpdate.self)
         
         identifiedArticle.update(with: updatedArticleDTO)
-        
         try await identifiedArticle.update(on: req.db)
-        
         return identifiedArticle
     }
     
-    /// Delete the Article within the table.
+    /// Delete the Article within the table after checking that the author requesting the delete, matches the author of the article.
     func delete(req: Request) async throws -> HTTPStatus {
-        guard let identifiedArticle = try await Article.find(req.parameters.get("id"), on: req.db) else { throw Abort(.notFound) }
+        let author = try await req.authService.requireAuthorization()
+        let articleID: UUID? = req.parameters.get("id")
+        let identifiedArticle = try await findArticle(id: articleID, on: req.db)
+        guard author.id == identifiedArticle.author.id else {
+            throw Abort(.badRequest, reason: "Requesting author doesn't match article author.")
+        }
         try await identifiedArticle.delete(on: req.db)
         return .ok
     }
     
     // MARK: - Private Helpers
     
-    private func findArticle(req: Request) async throws -> Article {
+    private func findArticle(id: UUID?, on database: Database) async throws -> Article {
         guard
-            let identifiedArticle = try await Article.find(req.parameters.get("id"), on: req.db)
+            let identifiedArticle = try await Article.find(id, on: database)
         else { throw Abort(.notFound) }
         
         return identifiedArticle
