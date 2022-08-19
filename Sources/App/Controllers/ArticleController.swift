@@ -89,9 +89,12 @@ struct ArticleController: RouteCollection {
         let author = try await req.authService.requireAuthorization()
         let articleID: UUID? = req.parameters.get("id")
         let identifiedArticle = try await findArticle(id: articleID, on: req.db)
-        guard author.id == identifiedArticle.author.id else {
+        guard author.id == identifiedArticle.$author.id else {
             throw Abort(.badRequest, reason: "Requesting author doesn't match article author.")
         }
+        
+        try await identifiedArticle.$coauthors.detach(author, on: req.db)
+        
         try await identifiedArticle.delete(on: req.db)
         return .ok
     }

@@ -98,7 +98,6 @@ extension Article {
         tags = articleUpdate.tags
         url = articleUpdate.url
         content = articleUpdate.content
-        coauthors = articleUpdate.coauthors
         postDate = articleUpdate.postDate
     }
 }

@@ -1,0 +1,348 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "oneleif",
+    "version": "v0.0.0"
+  },
+  "host": "localhost:8080",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/",
+  "paths": {
+    "/articles/ID": {
+      "put": {
+        "summary": "Update Article",
+        "description": "",
+        "operationId": "30ebc0a4-70f0-4ad3-b7ca-1ee2686f4d04",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"author\":{\"id\":\"A33373CF-E99F-4CFB-926D-0FC704ACEBB8\"},\"content\":\"UPDATED!!!\",\"id\":\"0277C1A7-0163-4A67-BF54-48174F91D3F7\",\"title\":\"Some Article Title\",\"postDate\":\"2022-08-19T00:16:49Z\",\"description\":\"Some Description\",\"tags\":[\"first\",\"paw\"],\"url\":\"some-url.com\",\"coauthors\":[]}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "get": {
+        "summary": "Find Article",
+        "description": "",
+        "operationId": "07fdf840-54ad-481e-a3cd-14797c45c843",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Article",
+        "description": "",
+        "operationId": "d1f04661-0810-4bc5-8489-53f2e893acf0",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/articles": {
+      "get": {
+        "summary": "Get Articles",
+        "description": "",
+        "operationId": "2c4e5d00-c0e9-4609-951e-a1c407b4d998",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Article",
+        "description": "",
+        "operationId": "6a2741be-6fac-4678-9f65-98f185f63bde",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"title\":\"Some Article Title\",\"description\":\"Some Description\",\"tags\":[\"first\",\"paw\"],\"url\":\"some-url.com\",\"content\":\"larum ipsum\",\"coauthors\":[\"7482EA98-6301-4EB7-936D-B8F2A4BBF8D7\"]}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/users/ID": {
+      "get": {
+        "summary": "Find User",
+        "description": "",
+        "operationId": "4d4cfa24-ad2e-49dc-84ed-c90573659dd4",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update User",
+        "description": "",
+        "operationId": "5f6812c4-3527-45fa-b6da-02b4a2a420b9",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"email\":\"leif@oneleif.com\",\"passwordHash\":\"UPDATED-PASSWORD\",\"tags\":[],\"links\":[],\"id\":\"ID\"}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete User",
+        "description": "",
+        "operationId": "a10b3f99-d2b9-4847-b41f-a49d43650db3",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "summary": "Get Users",
+        "description": "",
+        "operationId": "72178d86-1b2e-4b0e-868b-c73072db453b",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Create User",
+        "description": "",
+        "operationId": "186f9223-5166-45b3-85dd-9fdaf8f416cd",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"email\":\"new@email.com\",\"passwordHash\":\"HASHED-PASSWORD\",\"tags\":[],\"links\":[]}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/auth": {
+      "delete": {
+        "summary": "Log Out",
+        "description": "",
+        "operationId": "c9a5c0ba-a1c3-49d5-96ce-201299f559bf",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "post": {
+        "summary": "Sign Up",
+        "description": "",
+        "operationId": "d84b42b9-8b48-4d7c-bbdf-4208b25a171a",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"email\":\"leif@oneleif.com\",\"password\":\"123456789\",\"confirmPassword\":\"123456789\"}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Log In",
+        "description": "",
+        "operationId": "48a9ee2e-5d50-4804-ac28-41a21df8c113",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "Cookie",
+            "required": false,
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"email\":\"leif@oneleif.com\",\"password\":\"123456789\"}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
