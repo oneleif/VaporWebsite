@@ -10,11 +10,11 @@ import Fluent
 
 struct AuthenticationController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let auth = routes.grouped("auth")
-        auth.post(use: signUserUp)
-        
-        let passwordProtected = routes.grouped("login")
-        passwordProtected.post(use: loginUser)
+        routes.group("auth") { auth in
+            auth.post(use: signUserUp)
+            auth.delete(use: logout)
+        }
+        routes.post("login", use: loginUser)
     }
     
     /// Sign User Up.
@@ -28,19 +28,25 @@ struct AuthenticationController: RouteCollection {
         let user = try User(
             email: create.email,
             passwordHash: Bcrypt.hash(create.password),
-            firstName: "",
-            lastName: "",
-            discordUsername: "",
-            githubUsername: "",
+            firstName: nil,
+            lastName: nil,
+            discordUsername: nil,
+            githubUsername: nil,
             tags: [],
             links: [],
-            profileImage: "",
-            biography: "",
-            location: ""
+            profileImage: nil,
+            biography: nil,
+            location: nil
         )
         
         try await user.save(on: req.db)
         return user
+    }
+    
+    func logout(req: Request) async throws -> HTTPStatus {
+        req.session.destroy()
+        req.auth.logout(User.self)
+        return .ok
     }
     
     /// Log User In.

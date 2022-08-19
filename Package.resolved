@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/0xLeif/Fork.git",
       "state" : {
-        "revision" : "443010d431573b661d13ecbad1a8c9a9d7e156e5",
-        "version" : "0.6.0"
+        "revision" : "ea62ba5a48ad2c8986e94977fc81a90f1ffe76c3",
+        "version" : "1.0.0"
       }
     },
     {
