@@ -30,13 +30,9 @@ struct UserController: RouteCollection {
     
     /// Query all users within the table.
     func index(req: Request) async throws -> [UserDTO] {
-        try await ForkedArray(
-            try await User.query(on: req.db).all(),
-            output: {
-                try await $0.dto(on: req.db)
-            }
-        )
-        .output()
+        try await User.query(on: req.db)
+            .all()
+            .asyncMap { try await $0.dto(on: req.db) }
     }
     
     /// Create user within the table.
