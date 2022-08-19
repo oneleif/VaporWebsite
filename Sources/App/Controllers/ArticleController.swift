@@ -32,7 +32,7 @@ struct ArticleController: RouteCollection {
         return try await Article.query(on: req.db).all()
     }
     
-    /// Create an Article within the table.
+    /// Function ensures that the user is authenticated, then creates an article within the table.
     func create(req: Request) async throws -> Article {
         let articleCreate = try req.content.decode(ArticleCreate.self)
         
@@ -97,7 +97,11 @@ struct ArticleController: RouteCollection {
     }
     
     // MARK: - Private Helpers
-    
+    /// Helper function that retrieves an article id.
+    ///
+    /// parameters:
+    /// - id: UUID?
+    /// - database: Database.
     private func findArticle(id: UUID?, on database: Database) async throws -> Article {
         guard
             let identifiedArticle = try await Article.find(id, on: database)

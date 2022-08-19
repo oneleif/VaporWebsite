@@ -10,7 +10,7 @@ import Vapor
 
 /// User Model
 ///
-/// This outlines the User Model. Additionally, it creates an optional child for the social information.
+/// Outlines the User Model. Additionally, it creates an optional child for the social information.
 final class User: Model, Content {
     static var schema = "users"
     
@@ -117,7 +117,7 @@ extension User {
     }
 }
 
-// Output
+// GET: Output
 
 struct UserDTO: Content {
     let id: String
@@ -175,8 +175,8 @@ extension User: ModelAuthenticatable {
     }
 }
 
-/// Validations which ensure fields are met before POST.
 extension User.Create: Validatable {
+    /// Function ensures that the set required validations are met.
     static func validations(_ validations: inout Validations) {
         validations.add("email", as: String.self, is: !.empty && .email)
         validations.add("password", as: String.self, is: !.empty && .count(8...), required: true)

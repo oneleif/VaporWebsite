@@ -17,7 +17,7 @@ struct AuthenticationController: RouteCollection {
         routes.post("login", use: loginUser)
     }
     
-    /// Sign User Up.
+    /// Function passes in the users email and password which if it meets the `User.Create: Validatable` critera, returns the user.
     func signUserUp(req: Request) async throws -> User {
         try User.Create.validate(content: req)
         let create = try req.content.decode(User.Create.self)
@@ -43,13 +43,15 @@ struct AuthenticationController: RouteCollection {
         return user
     }
     
+    /// Function destroys the session token then logs the user out.
     func logout(req: Request) async throws -> HTTPStatus {
         req.session.destroy()
         req.auth.logout(User.self)
         return .ok
     }
     
-    /// Log User In.
+    /// Function logs the user in after verifying the credentials.
+    /// - note: Returns the `UserDTO` in order to not pass back the `passwordHash` as it is uneeded.
     func loginUser(req: Request) async throws -> UserDTO {
         let userLogin = try req.content.decode(User.Login.self)
         guard let user = try await User.query(on: req.db).filter(\.$email, .equal, userLogin.email).first() else {
