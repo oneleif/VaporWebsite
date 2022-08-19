@@ -1,7 +1,7 @@
 ![OneLeif Logo](https://github.com/oneleif/olDocs/blob/master/assets/images/oneleif_logos/full_logo/oneleif_whiteback.png)
 ## Project Info
 
-This project is a central repository for the **oneleif** website. The website will feature articles, 
+This project is a central repository for the [**oneleif** website project](https://github.com/oneleif/olWebsite-React). The website will feature articles, 
 social information and serves as a central place to share information and be recruited.
 
 This repository specifically holds the backend for serving up API requests and pre-rendered HTML views.
