@@ -71,7 +71,6 @@ final class Article: Model, Content {
 struct ArticleCreate: Content {
     let title: String
     let description: String
-    let author: User.IDValue
     let tags: [String]
     let url: String
     let content: String
@@ -85,7 +84,6 @@ struct ArticleUpdate: Content {
     let id: UUID
     let title: String
     let description: String
-    let author: User
     let tags: [String]
     let url: String
     let content: String
@@ -97,7 +95,6 @@ extension Article {
     func update(with articleUpdate: ArticleUpdate) {
         title = articleUpdate.title
         description = articleUpdate.description
-        author = articleUpdate.author
         tags = articleUpdate.tags
         url = articleUpdate.url
         content = articleUpdate.content

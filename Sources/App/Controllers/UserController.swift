@@ -12,7 +12,10 @@ import Vapor
 /// User route controller.
 struct UserController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let users = routes.grouped("users")
+        let users = routes
+            .grouped(User.guardMiddleware())
+            .grouped("users")
+        
         users.get(use: index)
         users.post(use: createUser)
         
@@ -42,8 +45,6 @@ struct UserController: RouteCollection {
         try await user.save(on: req.db)
         return try await user.dto(on: req.db)
     }
-    
- 
     
     /// Find the User for the provided User ID
     func find(req: Request) async throws -> UserDTO {
