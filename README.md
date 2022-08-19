@@ -17,6 +17,8 @@ To check out the Android version of the app, take a look at the following reposi
 This project is an **oneleif** active project, meaning it is open sourced, ran and, maintained by the members of 
 **oneleif**, with support of other members.
 
+## [Docs](https://oneleif-website.herokuapp.com/docs/index.html)
+
 ## Socials & Contacts
 [![](https://img.shields.io/badge/oneleif-Twitter-blue.svg)](https://twitter.com/oneleifdev) [![](https://img.shields.io/badge/oneleif-YouTube-red.svg)](https://www.youtube.com/channel/UC3HN0jID38K0Vb_WChvgQmA) [![](https://img.shields.io/badge/oneleif-discord-success)](https://discord.com/invite/Ay2A8kN) [![](https://img.shields.io/badge/oneleif-website-informational)](https://oneleif.com) [![](https://img.shields.io/badge/oneleif-email-important)](mailto:oneleifdev@gmail.com)
 
