@@ -10,6 +10,14 @@ public func configure(_ app: Application) throws {
     app.middleware.use(app.sessions.middleware)
     app.middleware.use(User.sessionAuthenticator())
     
+    let corsConfiguration = CORSMiddleware.Configuration(
+            allowedOrigin: .all,
+            allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+            allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
+        )
+        let corsMiddleware = CORSMiddleware(configuration: corsConfiguration)
+    app.middleware.use(corsMiddleware)
+    
     if let databaseURL = Environment.get("DATABASE_URL"), var postgresConfig = PostgresConfiguration(url: databaseURL) {
         postgresConfig.tlsConfiguration = .makeClientConfiguration()
         postgresConfig.tlsConfiguration?.certificateVerification = .none
