@@ -23,10 +23,10 @@ This project is an **oneleif** active project, meaning it is open sourced, ran a
 
 ## Want to join the oneleif community?
 Join the Discord server by clicking the link above. You will start with limited permissions, in a text channel that
-only moderators will see. In order to get full access, review the rules, make an introduction within the #introductions
+only moderators will see. In order to get full access, review the rules in #onboarding, make an introduction within the #introductions
 channel, and add an appropriate username.
 
-Once that is complete, shoot a message into the #start channel, and we will give you full access.
+Once that is complete, we will give you full access where you can choose your interests and gain access to more specific channels.
 
 ## oneleif website is running on Vapor!
 
