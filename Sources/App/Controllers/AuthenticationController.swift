@@ -54,6 +54,7 @@ struct AuthenticationController: RouteCollection {
     /// - note: Returns the `UserDTO` in order to not pass back the `passwordHash` as it is uneeded.
     func loginUser(req: Request) async throws -> UserDTO {
         let userLogin = try req.content.decode(User.Login.self)
+        /// If this passes, it will allow you to use the user. Otherwise, it will simply throw an `Abort(.notFound)`.
         guard let user = try await User.query(on: req.db).filter(\.$email, .equal, userLogin.email).first() else {
             throw Abort(.notFound)
         }
