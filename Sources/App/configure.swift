@@ -6,29 +6,39 @@ let instanceID: UUID = UUID()
 
 // configures your application
 public func configure(_ app: Application) throws {
-    // MARK: - Cors Configuration
+    // MARK: - CORSMiddleware
+    
     let corsConfiguration = CORSMiddleware.Configuration(
-            allowedOrigin: .all,
-            allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
-            allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
-        )
+        allowedOrigin: .all,
+        allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+        allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
+    )
     let corsMiddleware = CORSMiddleware(configuration: corsConfiguration)
+    
     app.middleware.use(corsMiddleware)
+    
+    // MARK: - FileMiddleware
+    
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
-    // MARK: - Cookie Factory
+    // MARK: - SessionsMiddleware
+    
     app.sessions.configuration.cookieFactory = { sessionID in
             .init(
                 string: sessionID.string,
-                expires: .now.addingTimeInterval(60 * 60 * 3),
+                expires: Date().addingTimeInterval(60 * 60 * 3),
                 isSecure: true,
                 isHTTPOnly: true
             )
     }
     app.middleware.use(app.sessions.middleware)
+    
+    // MARK: - User SessionAuthenticatable Middleware
+    
     app.middleware.use(User.sessionAuthenticator())
-
+    
     // MARK: - Database Configuration
+    
     if let databaseURL = Environment.get("DATABASE_URL"), var postgresConfig = PostgresConfiguration(url: databaseURL) {
         postgresConfig.tlsConfiguration = .makeClientConfiguration()
         postgresConfig.tlsConfiguration?.certificateVerification = .none
@@ -47,6 +57,7 @@ public func configure(_ app: Application) throws {
     }
     
     // MARK: - Migrations
+    
     app.migrations.add(
         User.Migration(),
         Article.Migration(),
@@ -55,6 +66,7 @@ public func configure(_ app: Application) throws {
     
     try app.autoMigrate().wait()
     
-    // register routes
+    // MARK: - Routes
+    
     try routes(app)
 }
