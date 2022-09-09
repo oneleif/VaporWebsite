@@ -10,8 +10,8 @@ public func configure(_ app: Application) throws {
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.middleware.use(User.sessionAuthenticator())
     
+    // MARK: - Cookie Factory
     app.sessions.configuration.cookieName = "please-vapor-please"
-    
     app.sessions.configuration.cookieFactory = { sessionID in
             .init(
                 string: sessionID.string,
@@ -21,6 +21,7 @@ public func configure(_ app: Application) throws {
             )
     }
     
+    // MARK: - Cors Configuration
     let corsConfiguration = CORSMiddleware.Configuration(
             allowedOrigin: .all,
             allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
@@ -29,6 +30,7 @@ public func configure(_ app: Application) throws {
         let corsMiddleware = CORSMiddleware(configuration: corsConfiguration)
     app.middleware.use(corsMiddleware)
     
+    // MARK: - Database Configuration
     if let databaseURL = Environment.get("DATABASE_URL"), var postgresConfig = PostgresConfiguration(url: databaseURL) {
         postgresConfig.tlsConfiguration = .makeClientConfiguration()
         postgresConfig.tlsConfiguration?.certificateVerification = .none
@@ -46,6 +48,7 @@ public func configure(_ app: Application) throws {
         )
     }
     
+    // MARK: - Migrations
     app.migrations.add(
         User.Migration(),
         Article.Migration(),
