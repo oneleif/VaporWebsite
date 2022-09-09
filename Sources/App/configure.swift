@@ -10,6 +10,15 @@ public func configure(_ app: Application) throws {
     app.middleware.use(app.sessions.middleware)
     app.middleware.use(User.sessionAuthenticator())
     
+    app.sessions.configuration.cookieFactory = { sessionID in
+            .init(
+                string: sessionID.string,
+                expires: .now.addingTimeInterval(60 * 60 * 3),
+                isSecure: true,
+                isHTTPOnly: true
+            )
+    }
+    
     let corsConfiguration = CORSMiddleware.Configuration(
             allowedOrigin: .all,
             allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
