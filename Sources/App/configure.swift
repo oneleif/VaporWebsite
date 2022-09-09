@@ -6,8 +6,8 @@ let instanceID: UUID = UUID()
 
 // configures your application
 public func configure(_ app: Application) throws {
-    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.middleware.use(app.sessions.middleware)
+    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.middleware.use(User.sessionAuthenticator())
     
     app.sessions.configuration.cookieFactory = { sessionID in
