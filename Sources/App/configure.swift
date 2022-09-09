@@ -10,6 +10,8 @@ public func configure(_ app: Application) throws {
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.middleware.use(User.sessionAuthenticator())
     
+    app.sessions.configuration.cookieName = "please-vapor-please"
+    
     app.sessions.configuration.cookieFactory = { sessionID in
             .init(
                 string: sessionID.string,
